@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Light JavaScript Playground - Export</title>
+ <!-- <script type="text/javascript" src="http://code.jquery.com/jquery-2.0.2.min.js"></script> -->
+ <script type="text/javascript" src="jquery.js"></script>
+  <style type="text/css">
+@import url(http://fonts.googleapis.com/css?family=Lato:400,700);
+
+body {
+  background-color: #f0f0f0;
+  color: #333;
+  font-family: Lato, Helvetica, Arial, sans-serif;
+  margin: 25px;
+}
+
+
+@media print {
+    html {
+        width: 58mm;
+    }
+    body { 
+        color: #000;
+        padding: 0px;
+        margin: 3mm;
+        text-align: center;
+    }
+    .qrcode {
+        width: 100%;
+    }
+    .qrcode img {
+        width: 100%;
+        height: auto;
+    }
+}
+  </style>
+</head>
+
+<body>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.js"></script> -->
+<script type="text/javascript" src="qrcode.js"></script>
+<h1>QR Code Print Test</h1>
+<div class="qrcode"></div>
+
+<script type="text/javascript">
+$('document').ready(function() {
+  $('body>h1').html('Activated');
+  
+  txt = JSON.stringify({
+      name1: "พงศ์พันธ์ เพียรพานิชย์",
+      name2: "พงศ์พันธ์ เพียรพานิชย์",
+      name3: "พงศ์พันธ์ เพียรพานิชย์",
+      name4: "พงศ์พันธ์ เพียรพานิชย์",
+      name5: "พงศ์พันธ์ เพียรพานิชย์",
+      name6: "พงศ์พันธ์ เพียรพานิชย์",
+      name7: "พงศ์พันธ์ เพียรพานิชย์",
+  })
+  console.log({txt})
+  
+  $('.qrcode').html(create_qrcode(txt,18))
+});
+
+var create_qrcode = function(text, typeNumber,
+    errorCorrectionLevel, mode) {
+
+  qrcode.stringToBytes = qrcode.stringToBytesFuncs["UTF-8"];
+
+  var qr = qrcode(typeNumber || 4, errorCorrectionLevel || 'L');
+  qr.addData(text, mode);
+  qr.make();
+
+  return qr.createImgTag();
+};
+</script>
+</body>
+</html>

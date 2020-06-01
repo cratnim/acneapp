@@ -1,0 +1,40 @@
+{
+  "expo": {
+    "name": "Acne",
+    "slug": "acne",
+    "privacy": "public",
+    "sdkVersion": "35.0.0",
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "android": {
+      "package": "com.cils.acne"
+    },
+    "version": "1.0.5",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#2699FB"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "buildNumber": "2",
+      "supportsTablet": true,
+      "bundleIdentifier": "com.cils.acne",
+      "googleServicesFile": "./GoogleService-Info.plist"
+
+    },
+    "description": "",
+    "entryPoint": "node_modules/expo/AppEntry.js"
+  },
+  "displayName": "Acne",
+  "name": "Acne"
+}

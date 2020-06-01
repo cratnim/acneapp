@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>QR Code - ข้อมูลผู้ป่วย </title>
+   <!-- <script type="text/javascript" src="http://code.jquery.com/jquery-2.0.2.min.js"></script> -->
+<script type="text/javascript" src="jquery.js"></script>
+  <style type="text/css">
+@import url(http://fonts.googleapis.com/css?family=Lato:400,700);
+
+body {
+  background-color: #2498F9;
+  color: #333;
+  font-family: Lato, Helvetica, Arial, sans-serif;
+  margin: 25px;
+}
+
+/* .form {
+	background-color: #ffffff;
+	padding: 50px 50px 50px 500px;
+	margin: 30px 100px 0px 100px;
+	border: 1px   #ffffff;
+  	border-radius: 20px 20px 0px 0px;
+} */
+.form {
+  display: grid;
+  grid-template-areas:
+    'header header1 header2 header3'
+    'main main1 main2 main3'
+    'footer footer1 footer2 footer3'
+	'lower lower1 lower2 lower3';
+  grid-gap: 10px;
+  background-color: white;
+  margin: 30px 100px 0px 100px;
+  padding-top: 50px;
+  border: 1px   #ffffff;
+  border-radius: 20px 20px 0px 0px;
+}
+
+.header { grid-area: header; }
+.header1 { grid-area: header1; }
+.header2 { grid-area: header2; }
+.header3 { grid-area: header3; }
+
+.main { grid-area: main; }
+.main1 { grid-area: main1; }
+.main2 { grid-area: main2; }
+.main3 { grid-area: main3; }
+
+.footer { grid-area: footer; }
+.footer1 { grid-area: footer1; }
+.footer2 { grid-area: footer2; }
+.footer3 { grid-area: footer3; }
+
+.lower { grid-area: lower; }
+.lower1 { grid-area: lower1; }
+.lower2 { grid-area: lower2; }
+.lower3 { grid-area: lower3; }
+
+
+.qrcode {
+	background-color: #ffffff;
+	padding: 0px 50px 25px 550px;
+	margin: 0px 100px 0px 100px;
+	border: 1px  #ffffff;
+  	border-radius: 0px 0px 20px 20px;
+}
+
+.button {
+	background-color: #ffffff;
+	padding: 30px 50px 25px 555px;
+	margin: 0px 100px 0px 100px;
+}
+
+.sign {
+	background-color: #ffffff;
+	padding: 0px 50px 25px 550px;
+	padding-left: 500px;
+	margin: 0px 100px 0px 100px;
+	border: 1px  #ffffff;
+  	border-radius: 0px 0px 20px 20px;
+	display: none;
+}
+
+.subheader {
+	color: #2874A6;
+	font-weight: bold;
+}
+
+.input {
+	margin: 5px 0px 10px 0px;	
+}
+
+input.input[type="text"] {
+	width: 200px;
+	border: 1px groove grey;
+  	border-radius: 5px;
+	padding: 2px;
+}
+
+h1 {
+	text-align: center;
+	color: white
+}
+::placeholder {
+  color: grey;
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+ color: grey;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+ color: grey;
+}
+
+.multiselect {
+  width: 250px;
+}
+
+.selectBox {
+  position: relative;
+}
+
+.selectBox select {
+  width: 100%;
+  font-weight: bold;
+}
+
+.overSelect {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+#checkboxes {
+  display: none;
+  border: 1px #dadada solid;
+}
+
+#checkboxes label {
+  display: block;
+}
+
+#checkboxes label:hover {
+  background-color: #1e90ff;
+}
+
+#checkboxesD {
+  display: none;
+  border: 1px #dadada solid;
+}
+
+#checkboxesD label {
+  display: block;
+}
+
+#checkboxesD label:hover {
+  background-color: #1e90ff;
+}
+
+@media print {
+    html {
+		color: white;
+        width: 58mm;
+		
+    }
+    body { 
+        padding: 0px;
+        margin: 3mm;
+        text-align: center;
+    }
+	h1 {
+		font-size: 26px;
+		text-align: center;
+	}
+	input {
+		display: none;
+	
+	}
+	select {
+		display: none;
+	}
+	.form {
+		display: none;
+	}
+	
+	.html {
+		color: black;
+	}
+    .qrcode {
+		padding-left: 0px;
+		margin: 0px;
+        width: 250px;
+        height: 250px;
+    }
+
+	.sign {
+		padding: 0px;
+		margin: 0px;
+		text-align: center;
+		display: block;
+    }
+    .qrcode img {
+      width: 250px;
+      height: 250px;
+    }
+}
+
+
+
+
+
+  </style>
+</head>
+
+<body>
+
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.js"></script> -->
+<script type="text/javascript" src="qrcode.js"></script>
+<h1 class="html">QR Code Print Test</h1>
+<div class="form">
+
+	<div class="header1">
+	<div class="subheader">หมายเลขบัตรประชาชน</div>
+	<input id="id" class="input" type="text" value=""  placeholder="X-XXXX-XXXXX-XX-X" maxlength="17" autocomplete="off"/>
+	</div>
+
+
+	<div class="main1">
+	<table style="float: left; margin-right:100%;">
+		<tr>
+		  <td><div class="subheader">ชื่อ</div></td>
+		  <td><div class="subheader">นามสกุล</div></td>
+		</tr>
+		<tr>
+		  <td><input id="name" class="input"  type="text" value=""  placeholder="ชื่อ" maxlength="50" autocomplete="off"/><br/></td>
+		  <td><input id="surname" class="input" type="text" value="" placeholder="นามสกุล" maxlength="50" autocomplete="off"/><br/>     </td>
+		</tr>
+	</table>
+	</div>
+
+	<div class="footer1">
+
+	<table style="float: left; margin-right:100%;">
+		<tr>
+		  <td><div class="subheader">เพศ</div></td>
+		  <td><div class="subheader">วันเกิด (ค.ศ.)</div></td>
+		</tr>
+		<tr>
+		  <td>
+			<select id='sex' type='text' class="input" >
+				<option value="m">ชาย</option>
+				<option value="f">หญิง</option>
+				<option value="o">ไม่ระบุ</option>
+			</select>
+		  </td>
+		  <td><input id="birth" type="date" class="input"/><br/></td>
+		</tr>
+	</table>
+	</div>
+
+	
+	<div class="lower1">
+	<div class="subheader">ระยะเวลาที่เป็นสิว</div>
+	<input id="acneY" type="number" value="0" min="0" max="20" style="margin-bottom: 10px;"> ปี
+	<input id="acneM" type="number" value="0" min="0" max="11" style="margin: 0px 0px 10px 10px;"> เดือน
+	</div>
+
+	<div class="header2">
+	<div class="subheader">ประวัติประจำเดือน</div>
+	<form id="periodForm" style="margin: 5px 0px 10px 0px;">
+		<input type="radio" name="period" value="y"> ปกติ
+		<input type="radio" name="period" value="n"> ไม่ปกติ
+		<input type="radio" name="period" value="o" checked> ไม่มี
+	</form>
+	</div>
+
+	<div class="main2">
+	<div class="subheader">การตั้งครรภ์</div>
+	<form id="pregnantdForm" class="input">
+			<input type="radio" name="pregnant" value="y"> ตั้งครรภ์
+			<input type="radio" name="pregnant" value="n"> ไม่ตั้งครรภ์
+			<input type="radio" name="pregnant" value="o" checked> ไม่มี
+	</form>
+	</div>
+
+	<div class="footer2">
+	<div class="subheader">โรคประจำตัว</div>
+	<form id="medicalForm" class="input">
+			<input type="radio" name="medical" value="n" checked>ไม่มี<br>
+			<input type="radio" name="medical" value="y"> มี
+	</form>
+	<form id="medical" style="display:none; margin: 0px 0px 10px 0px;">
+			<div class="multiselect">
+			<div class="selectBox" onclick="showCheckboxes('checkboxes')">
+				<select>
+				<option>ระบุ</option>
+				</select>
+				<div class="overSelect"></div>
+			</div>
+			<div id="checkboxes">
+				<label for="m0" style="display:none">
+					<input type="checkbox" id="m0" value="0" style="display:none" checked/>ไม่มี</label>  
+				<label for="m1">
+					<input type="checkbox" id="m1" value="1"/>Hepatic impairment</label>
+				<label for="m2">
+					<input type="checkbox" id="m2" value="2"/>Renal impairment</label>
+				<label for="m3">
+					<input type="checkbox" id="m3" value="3"/>Polycystic ovarian syndrome</label>
+				<label for="m4">
+					<input type="checkbox" id="m4" value="4"/>Others</label> 
+			</div>
+			</div>
+	</form>
+	<section id="m" style="display: none;"></section>
+	<section id="mm" style="display: none;"></section>
+	<input id="othersM" style="display: none;" class="input"  type="text" value=""  placeholder=" อื่น  ๆ โปรดระบุ" maxlength="50" autocomplete="off"/>
+	</div>
+
+	<div class="lower2">
+	<div class="subheader">ประวัติการแพ้ยา</div>
+	<form id="drugForm" class="input">
+			<input type="radio" name="drug" value="n" checked> ไม่แพ้ยา<br>
+			<input type="radio" name="drug" value="y"> แพ้ยา
+	</form>
+	<form id="drug" style="display:none;margin: 0px 0px 10px 0px;"> 
+			<div class="multiselect">
+			<div class="selectBox" onclick="showCheckboxes('checkboxesD')">
+				<select>
+				<option>ระบุ</option>
+				</select>
+				<div class="overSelect"></div>
+			</div>
+			<div id="checkboxesD">
+				<label for="d0" style="display:none">
+					<input type="checkbox" id="d0" value="0" style="display:none" checked/>ไม่แพ้ยา</label>  
+				<label for="d1">
+					<input type="checkbox" id="d1" value="1"/>Penicillin</label>
+				<label for="d2">
+					<input type="checkbox" id="d2" value="2"/>Doxycycline</label>
+				<label for="d3">
+					<input type="checkbox" id="d3" value="3"/>Tetracycline</label>
+				<label for="d4">
+					<input type="checkbox" id="d4" value="4"/>Lymecycline</label> 
+				<label for="d5">
+					<input type="checkbox" id="d5" value="5"/>Bactrim</label>
+				<label for="d6">
+					<input type="checkbox" id="d6" value="6"/>Cephalexin</label>
+				<label for="d7">
+					<input type="checkbox" id="d7" value="7"/>Ciprofloxacin</label>
+				<label for="d8">
+					<input type="checkbox" id="d8" value="8"/>Clindamycin</label> 
+				<label for="d9">
+					<input type="checkbox" id="d9" value="9"/>Erythromycin</label>
+				<label for="d10">
+					<input type="checkbox" id="d10" value="10"/>Azithromycin</label>
+				<label for="d11">
+					<input type="checkbox" id="d11" value="11"/>Clarithromycin</label>
+				<label for="d12">
+					<input type="checkbox" id="d12" value="12"/>Benzoyl peroxide</label> 
+				<label for="d13">
+					<input type="checkbox" id="d13" value="13"/>Adapalene</label>
+				<label for="d14">
+					<input type="checkbox" id="d14" value="14"/>Tretinoin</label> 
+				<label for="d15">
+					<input type="checkbox" id="d15" value="15"/>Azelaic</label>
+				<label for="d16">
+					<input type="checkbox" id="d16" value="16"/>Spironolactone</label>
+				<label for="d17">
+					<input type="checkbox" id="d17" value="17"/>Oral pills</label>
+				<label for="d18">
+					<input type="checkbox" id="d18" value="18"/>Isotretinoin</label> 
+				<label for="d19">
+					<input type="checkbox" id="d19" value="19"/>Others</label> 
+			</div>
+			</div>
+	</form>
+	<section id="d" style="display: none;"></section>
+	<section id="dd" style="display: none;"></section>
+	<input id="othersD" style="display: none;" class="input"  type="text" value=""  placeholder=" อื่น  ๆ โปรดระบุ" maxlength="50" autocomplete="off"/>
+	</div>
+</div>
+</div>
+
+<div id ="button" class="button">
+
+<button  type="button">Generate qr code</button>
+
+</div>
+<div id = "qrcode" style="display: none;" class="qrcode">  </div>
+<div class="sign">ลงชื่อ ________________________</div>
+
+
+<script type="text/javascript">
+$('document').ready(function() {
+  $('body>h1').html('ข้อมูลผู้ป่วยใหม่');
+  
+
+  function makeCode () {		
+	
+	var name = document.getElementById("name");
+	var surname = document.getElementById("surname");
+	var id = document.getElementById("id");
+	var sex = document.getElementById("sex");
+	var birth = document.getElementById("birth");
+	var acneY = document.getElementById("acneY");
+	var acneM = document.getElementById("acneM");
+	var othersmed = document.getElementById("othersM");
+	var othersallergic = document.getElementById("othersD");
+	var allergic = document.getElementsByTagName('section')[2].textContent;
+	var med = document.getElementsByTagName('section')[0].textContent;
+	var radios = document.getElementsByName('period');
+	var pregnantRadios = document.getElementsByName('pregnant');
+	var period;
+	var pregnant;
+	// alert(othersallergic.value)
+
+	for (var i = 0, length = radios.length; i < length; i++){
+		if (radios[i].checked) {
+			// do whatever you want with the checked radio
+			period = radios[i].value;
+			break;
+		}
+	}
+
+	for (var i = 0, length = pregnantRadios.length; i < length; i++){
+		if (pregnantRadios[i].checked) {
+			// do whatever you want with the checked radio
+			pregnant = pregnantRadios[i].value;
+			break;
+		}
+	}
+	
+	
+	values = JSON.stringify({
+      name: name.value+'#'+surname.value,
+	  ids: id.value+'#'+sex.value,
+	  birth: birth.value,
+	  acne: acneY.value+'#'+acneM.value,
+	  pp: period+'#'+pregnant,
+	  medic: med,	
+	  drug: allergic,  
+	  drugs: othersallergic.value,
+	  medical: othersmed.value
+  })
+  $('.qrcode').html(create_qrcode(values,10))
+}
+
+makeCode();
+
+
+$("#pregnantdForm input").
+	on("click", function () {
+		makeCode();
+	});
+
+$("#m4").
+	on("click", function () {
+		makeCode();
+	});
+
+$("#d19").
+	on("click", function () {
+		makeCode();
+	});
+
+
+$("#periodForm input").
+	on("click", function () {
+		makeCode();
+	});
+
+
+
+$("#medicalForm input").
+	on("click", function () {
+		if($('input[name=medical]:checked', '#medicalForm').val() == 'n'){
+			// ไม่มีโรคประจำตัว
+			document.getElementById("medical").style.display = "none";
+			document.getElementById("mm").style.display = "none";
+			$("#m0").attr("checked","checked");
+			var mSection = document.getElementsByTagName('section')[0];
+			updateCheckbox(mSection, '0');
+		}
+		else {
+			// มีโรคประจำตัว
+			document.getElementById("medical").style.display = "block";
+			document.getElementById("mm").style.display = "block";
+			$("#m0").removeAttr("checked");
+			makeCode();
+		}	
+	});	
+
+$('#m4').
+	on("click", function() {
+		if($(this).is(":checked")){
+			document.getElementById("othersM").style.display = "block";
+		}else  if($(this).is(":not(:checked)")){
+			document.getElementById("othersM").style.display = "none";
+		}
+		makeCode();
+	});
+
+$('#button').
+	on("click", function() {
+		document.getElementById("qrcode").style.display = "block";
+		makeCode();
+	});
+
+
+$("#drugForm input").
+	on("click", function () {
+
+
+		if($('input[name=drug]:checked', '#drugForm').val() == 'n'){
+			// ไม่แพ้ยา
+			document.getElementById("drug").style.display = "none";
+			document.getElementById("dd").style.display = "none";
+			$("#d0").attr("checked","checked");
+			var dSection = document.getElementsByTagName('section')[2];
+			updateCheckbox(dSection, '0');
+		}
+		else {
+			// แพ้ยา
+			document.getElementById("drug").style.display = "block";
+			document.getElementById("dd").style.display = "block";
+			$("#d0").removeAttr("checked");	
+			makeCode();
+		}	
+		makeCode();
+	});	
+
+$('#d19').
+	on("click", function() {
+		if($(this).is(":checked")){
+			document.getElementById("othersD").style.display = "block";
+		}else  if($(this).is(":not(:checked)")){
+			document.getElementById("othersD").style.display = "none";
+		}
+		
+	});
+	
+	
+$("#acneY").
+	on("blur", function () {
+		makeCode();
+	}).
+	on("keydown", function (e) {
+		if (e.keyCode == 13) {
+			makeCode();
+		}
+	});
+
+$("#acneM").
+	on("blur", function () {
+		makeCode();
+	}).
+	on("keydown", function (e) {
+		if (e.keyCode == 13) {
+			makeCode();
+		}
+	});
+
+$("#birth").
+	on("blur", function () {
+		makeCode();
+	}).
+	on("keydown", function (e) {
+		if (e.keyCode == 13) {
+			makeCode();
+		}
+	});
+
+$("#othersM").
+	on("blur", function () {
+		makeCode();
+	}).
+	on("keydown", function (e) {
+		if (e.keyCode == 13) {
+			makeCode();
+		}
+	});
+
+$("#othersD").
+	on("blur", function () {
+		makeCode();
+	}).
+	on("keydown", function (e) {
+		if (e.keyCode == 13) {
+			makeCode();
+		}
+	});
+
+
+$("#name").
+	on("blur", function () {
+		makeCode();
+	}).
+	on("keydown", function (e) {
+		if (e.keyCode == 13) {
+			makeCode();
+		}
+	});
+
+
+$("#surname").
+	on("blur", function () {
+		makeCode();
+	}).
+	on("keydown", function (e) {
+		if (e.keyCode == 13) {
+			makeCode();
+		}
+	});
+
+$("#id").
+	on("blur", function () {
+		makeCode();
+	}).
+	on("keydown", function (e) {
+		if (e.keyCode == 13) {
+			makeCode();
+		}
+	});
+$("#sex").
+	on("blur", function () {
+		makeCode();
+	}).
+	on("click", function () {
+		
+			makeCode();
+		
+	});
+
+var mSection = document.getElementsByTagName('section')[0];
+var mSection1 = document.getElementsByTagName('section')[1];
+var dSection = document.getElementsByTagName('section')[2];
+var dSection1 = document.getElementsByTagName('section')[3];
+var inputs = document.getElementsByTagName('input');
+
+// Document was changed!
+document.addEventListener('change', function(event) {
+  // Specifically, an input was changed in the document!
+  
+  if (event.target.tagName === 'INPUT') {
+	id = event.target.id; 
+	if (id.includes("m")) {
+		// Update the section
+		updateCheckboxStatus(mSection, mSection1);
+	} else if (id.includes("d")) {
+		// Update the section
+		updateCheckboxStatus(dSection, dSection1);
+	}  
+  }
+});
+
+// This function updates an element with the input status
+function updateCheckboxStatus(hideElement, showElement) {
+
+  elementID = hideElement.id;
+
+  // Clear the element first
+  hideElement.textContent = '';
+  showElement.textContent = '';
+
+  m = ['ไม่มี','Hepatic impairment','Renal impairment','Polycystic ovarian syndrome','Others'];
+  d = ['ไม่แพ้ยา','Penicillin','Doxycycline','Tetracycline',
+         'Lymecycline','Bactrim','Cephalexin','Ciprofloxacin','Clindamycin',
+         'Erythromycin','Azithromycin','Clarithromycin','Benzoyl peroxide',
+         'Adapalene','Tretinoin','Azelaic','Spironolactone','Oral pills',
+		 'Isotretinoin','Others'];
+
+  // Loop through each of the inputs
+  [].forEach.call(inputs, function(input) {
+	// If checked, add to the element
+	
+    if (input.checked) { 
+		inputID = input.id;
+		if (inputID.includes(elementID)){
+			textInput = elementID == 'd' ? d[input.value] : m[input.value] ;
+			
+			if(hideElement.textContent == '') {
+				hideElement.textContent = input.value;
+				showElement.textContent = textInput;
+			} else {
+				hideElement.textContent += "," + input.value ;
+				showElement.textContent += "," + textInput;
+				
+			}
+			
+		}	
+	}
+  });
+  makeCode();
+}  
+
+function updateCheckbox(element, input) {
+
+	elementID = element.id;
+
+	// Clear the element first
+	element.textContent = '';
+	// If checked, add to the element
+	
+	if(element.textContent == '') {
+		element.textContent = input;
+	}	
+	makeCode();
+}  
+
+});
+
+var create_qrcode = function(text, typeNumber,
+    errorCorrectionLevel, mode) {
+
+  qrcode.stringToBytes = qrcode.stringToBytesFuncs["UTF-8"];
+
+  var qr = qrcode(typeNumber || 4, errorCorrectionLevel || 'L');
+  qr.addData(text, mode);
+  qr.make();
+
+  return qr.createImgTag();
+};
+
+var expanded = false;
+
+function showCheckboxes(id) {
+  var checkboxes = document.getElementById(id);
+  if (!expanded) {
+    checkboxes.style.display = "block";
+    expanded = true;
+  } else {
+    checkboxes.style.display = "none";
+    expanded = false;
+  }
+}
+
+(function($, undefined) {
+
+"use strict";
+
+// When ready.
+$(function() {
+	
+	var $input = $( "#id" );
+   
+
+	$input.on( "keyup", function( event ) {
+		
+		
+		// When user select text in the document, also abort.
+		var selection = window.getSelection().toString();
+		if ( selection !== '' ) {
+			return;
+		}
+		
+		// When the arrow keys are pressed, abort.
+		if ( $.inArray( event.keyCode, [38,40,37,39] ) !== -1 ) {
+			return;
+		}
+		
+		var $this = $(this);
+		var input = $this.val();
+				input = input.replace(/[\W\D\s\._\-]+/g, '');
+			
+			var split = 1;
+			var chunk = [];
+
+			for (var i = 0, len = input.length; i < len; i += split) {
+				if ( i >= 1 && i <= 4 ) {
+					split = 4;
+				}
+				else if ( i >= 5 && i <= 9 ) {
+					split = 5;
+				}
+				else if ( i >= 10 && i <= 11 ) {
+					split = 2;
+				}
+				else {
+					split = 1;
+				}
+				// split = ( i >= 8 && i <= 16 ) ? 4 : 8;
+				chunk.push( input.substr( i, split ) );
+			}
+
+			$this.val(function() {
+				return chunk.join("-");
+			});
+	
+	} );
+});
+})(jQuery);
+
+</script>
+
+</body>
+</html>
